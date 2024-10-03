@@ -1,20 +1,3 @@
-# services:
-#   web:
-#     build: .
-#     ports:
-#       - "8000:5000"
-#   redis:
-#     image: "redis:alpine"
-
-
-services:
-  web:
-    build: .
-    ports:
-      - "8000:5000"
-  redis:
-    image: "redis:alpine"
-
 
 # -----------------------------
 
@@ -26,6 +9,41 @@ services:
 # docker run -d -p 5009:5000 --network=redis compose-flask   // create container from own image and linked to network 
 
 
-# Method2: compose.yaml:
+# Method2: compose.yaml: WITOUT VOLUME & ENV variable
 
-# docker compose up
+# docker compose up 
+
+# -----------------------------
+# services:
+#   web:
+#     build: .
+#     ports:
+#       - "8000:5000"
+#   redis:
+#     image: "redis:alpine"
+
+
+# ----------------------------------------------
+
+# Method 3: compose.yaml: with VOLUME & ENV variable
+# docker compose up 
+
+services:
+  web:
+    depends_on:
+      - redis
+    build: .
+    ports:
+      - "8000:5000"
+    volumes:
+      - .:/code
+    environment:
+      - REDIS_HOST=redis
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - .:/data
+
+
+
+
