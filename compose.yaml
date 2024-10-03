@@ -1,3 +1,12 @@
+# services:
+#   web:
+#     build: .
+#     ports:
+#       - "8000:5000"
+#   redis:
+#     image: "redis:alpine"
+
+
 services:
   web:
     build: .
@@ -5,3 +14,18 @@ services:
       - "8000:5000"
   redis:
     image: "redis:alpine"
+
+
+# -----------------------------
+
+# Method1: network :
+
+# docker network create redis
+# docker build -t compose-flask .                             // create image from Dockerfile of project
+# docker run -p 6379:6379 --network=redis redis               // create container from redis linked to network
+# docker run -d -p 5009:5000 --network=redis compose-flask   // create container from own image and linked to network 
+
+
+# Method2: compose.yaml:
+
+# docker compose up
